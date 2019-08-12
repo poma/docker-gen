@@ -1,0 +1,1 @@
+jwilder/docker-gen with embedded nginx.tmpl file
