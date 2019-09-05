@@ -1,3 +1,5 @@
+# docker-gen ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/poma/docker-gen)
+
 [jwilder/docker-gen](https://github.com/jwilder/docker-gen) with:
 
 - embedded nginx.tmpl file
