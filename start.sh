@@ -9,7 +9,7 @@ while IFS='=' read -r name value; do
     config+="$identifier ${!name};$newline"
   fi
 done < <(env)
-if [[ -z "$config" ]]; then
+if [[ ! -z $config ]]; then
 	mkdir -p /etc/nginx/conf.d
 	echo "Generated config:"
 	echo "$config"
