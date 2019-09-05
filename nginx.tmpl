@@ -65,6 +65,12 @@ log_format vhost '$host $remote_addr - $remote_user [$time_local] '
 
 access_log off;
 
+{{ range $key, $val := .Env }}
+{{ if hasPrefix "nginx_" $key }}
+{{ trimPrefix "nginx_" $key }} {{ $val }};
+{{ end }}
+{{ end }}
+
 {{ if $.Env.RESOLVERS }}
 resolver {{ $.Env.RESOLVERS }};
 {{ end }}
@@ -172,9 +178,6 @@ upstream {{ $upstream_name }} {
 {{/* Get the VIRTUAL_ROOT By containers w/ use fastcgi root */}}
 {{ $vhost_root := or (first (groupByKeys $containers "Env.VIRTUAL_ROOT")) "/var/www/public" }}
 
-{{/* Get the NGINX_CLIENT_MAX_BODY_SIZE By containers w/ define it */}}
-{{ $client_max_body_size := or (first (groupByKeys $containers "Env.NGINX_CLIENT_MAX_BODY_SIZE")) }}
-
 {{/* Get the first cert name defined by containers w/ the same vhost */}}
 {{ $certName := (first (groupByKeys $containers "Env.CERT_NAME")) }}
 
@@ -268,8 +271,10 @@ server {
 	add_header Strict-Transport-Security "{{ trim $hsts }}" always;
 	{{ end }}
 
-	{{ if $client_max_body_size }}
-	client_max_body_size {{ $client_max_body_size }};
+	{{ range $key, $val := (first $containers).Env }}
+	{{ if hasPrefix "nginx_" $key }}
+	{{ trimPrefix "nginx_" $key }} {{ $val }};
+  {{ end }}
 	{{ end }}
 
 	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
@@ -319,8 +324,10 @@ server {
 	include /etc/nginx/network_internal.conf;
 	{{ end }}
 
-	{{ if $client_max_body_size }}
-	client_max_body_size {{ $client_max_body_size }};
+	{{ range $key, $val := (first $containers).Env }}
+  {{ if hasPrefix "nginx_" $key }}
+  {{ trimPrefix "nginx_" $key }} {{ $val }};
+  {{ end }}
 	{{ end }}
 
 	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
