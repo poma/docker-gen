@@ -7,3 +7,53 @@
 - docker socket by default located in /var/run/docker.sock, same as in letsencrypt companion
 
 Environment variables starting with `nginx_*` are added as nginx config parameters to `/etc/nginx/conf.d/env.conf`, both upper and lower case are supported. Example: `nginx_client_max_body_size=30M`
+
+Example docker file:
+
+```yaml
+version: '2.1'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs
+
+  dockergen:
+    image: poma/docker-gen
+    container_name: dockergen
+    restart: always
+    command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    environment:
+      NGINX_CLIENT_MAX_BODY_SIZE: 30M
+    volumes_from:
+      - nginx
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    restart: always
+    environment:
+      NGINX_DOCKER_GEN_CONTAINER: dockergen
+    volumes_from:
+      - nginx
+      - dockergen
+
+volumes:
+  conf:
+  vhost:
+  html:
+  certs:
+```
