@@ -9,9 +9,11 @@ while IFS='=' read -r name value; do
     config+="$identifier ${!name};$newline"
   fi
 done < <(env)
-mkdir -p /etc/nginx/conf.d
-echo "Generated config:"
-echo "$config"
-echo "$config" > /etc/nginx/conf.d/env.conf
+if [[ -z $config ]]; then
+	mkdir -p /etc/nginx/conf.d
+	echo "Generated config:"
+	echo "$config"
+	echo "$config" > /etc/nginx/conf.d/env.conf
+fi
 
 exec /usr/local/bin/docker-gen "$@"
