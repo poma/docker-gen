@@ -40,8 +40,6 @@ services:
       - nginx
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      - com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
