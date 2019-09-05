@@ -8,6 +8,8 @@
 
 Environment variables starting with `nginx_*` are added as nginx config parameters to `/etc/nginx/conf.d/env.conf`, both upper and lower case are supported. Example: `nginx_client_max_body_size=30M`
 
+This fork automatically pulls and rebuilds on Docker Hub on any changes in upstream repo
+
 Example docker file:
 
 ```yaml
