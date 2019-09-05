@@ -5,9 +5,8 @@
 - embedded nginx.tmpl file
 - support for environment variables
 - docker socket by default located in /var/run/docker.sock, same as in letsencrypt companion
-- nginx.tmpl updated to accept NGINX_CLIENT_MAX_BODY_SIZE env var per vhost (todo: enumerate `nginx_*` vars per vhost)
 
-Environment variables starting with `nginx_*` are added as nginx config parameters to `/etc/nginx/conf.d/env.conf`, both upper and lower case are supported. Example: `nginx_client_max_body_size=30M`
+Environment variables starting with `nginx_*` are added as nginx config, for example: `nginx_client_max_body_size=30M`. Variables of docker-gen container are added to global config, and variables on others containers area added to the respective vhosts. Currently only lower case variables are supported.
 
 This fork automatically pulls and rebuilds on Docker Hub on any changes in upstream repo
 
@@ -36,7 +35,7 @@ services:
     restart: always
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     environment:
-      NGINX_CLIENT_MAX_BODY_SIZE: 30M
+      nginx_client_max_body_size: 42M
     volumes_from:
       - nginx
     volumes:
@@ -51,6 +50,13 @@ services:
     volumes_from:
       - nginx
       - dockergen
+
+  app:
+    image: app
+    environment:
+      VIRTUAL_HOST: example.com
+      LETSENCRYPT_HOST: example.com
+      nginx_client_max_body_size: 1337M
 
 volumes:
   conf:
