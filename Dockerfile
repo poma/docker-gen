@@ -1,5 +1,7 @@
 FROM jwilder/docker-gen
 
+RUN apk add bash
+
 # Make the default docker sock location same as letsencrypt
 ENV DOCKER_HOST unix:///var/run/docker.sock
 
