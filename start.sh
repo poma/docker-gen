@@ -14,6 +14,8 @@ if [[ -z $config ]]; then
 	echo "Generated config:"
 	echo "$config"
 	echo "$config" > /etc/nginx/conf.d/env.conf
+else
+	rm -f /etc/nginx/conf.d/env.conf
 fi
 
 exec /usr/local/bin/docker-gen "$@"
