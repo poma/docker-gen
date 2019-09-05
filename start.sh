@@ -15,6 +15,7 @@ if [[ -z $config ]]; then
 	echo "$config"
 	echo "$config" > /etc/nginx/conf.d/env.conf
 else
+	echo "No nginx custom variables detected"
 	rm -f /etc/nginx/conf.d/env.conf
 fi
 
