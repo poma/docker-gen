@@ -14,4 +14,4 @@ echo "Generated config:"
 echo "$config"
 echo "$config" > /etc/nginx/conf.d/env.conf
 
-exec "/usr/local/bin/docker-gen $@"
+exec /usr/local/bin/docker-gen "$@"
