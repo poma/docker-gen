@@ -1,10 +1,10 @@
-# docker-gen ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/)[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/poma/docker-gen.svg)](https://hub.docker.com/r/poma/docker-gen/builds)
+# docker-gen [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/poma/docker-gen.svg)](https://hub.docker.com/r/poma/docker-gen/builds)
 
 [jwilder/docker-gen](https://github.com/jwilder/docker-gen) with:
 
 - embedded `nginx.tmpl` file
 - support for `nginx_*` environment variables
-- docker socket by default located in /var/run/docker.sock, same as in letsencrypt companion
+- docker socket by default located in `/var/run/docker.sock`, same as in letsencrypt companion
 
 Environment variables starting with `nginx_*` are added as nginx config entries, for example: `nginx_client_max_body_size=30M`. Variables of docker-gen container are added to global config, and variables on others containers are added to the respective vhosts. Currently only lower case variables are supported (until [jwilder/docker-gen#306](https://github.com/jwilder/docker-gen/pull/306) is merged).
 
