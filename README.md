@@ -1,6 +1,6 @@
 # docker-gen [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/poma/docker-gen.svg)](https://hub.docker.com/r/poma/docker-gen/builds)
 
-[nginxproxy/docker-gen](https://github.com/nginxproxy/docker-gen) with:
+[nginx-proxy/docker-gen](https://github.com/nginx-proxy/docker-gen) with:
 
 - embedded `nginx.tmpl` file
 - support for `NGINX_*` environment variables
