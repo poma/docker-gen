@@ -41,15 +41,17 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt
+  acme:
+    image: nginxproxy/acme-companion
+    container_name: acme
     restart: always
     environment:
       NGINX_DOCKER_GEN_CONTAINER: dockergen
     volumes_from:
       - nginx
       - dockergen
+    volumes:
+      - acme:/etc/acme.sh
 
   app:
     image: app
@@ -64,4 +66,5 @@ volumes:
   vhost:
   html:
   certs:
+  acme:
 ```
