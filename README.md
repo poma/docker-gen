@@ -1,12 +1,12 @@
 # docker-gen [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/poma/docker-gen.svg)](https://hub.docker.com/r/poma/docker-gen/builds)
 
-[jwilder/docker-gen](https://github.com/jwilder/docker-gen) with:
+[nginxproxy/docker-gen](https://github.com/nginxproxy/docker-gen) with:
 
 - embedded `nginx.tmpl` file
-- support for `nginx_*` environment variables
+- support for `NGINX_*` environment variables
 - docker socket by default located in `/var/run/docker.sock`, same as in letsencrypt companion
 
-Environment variables starting with `nginx_*` are added as nginx config entries, for example: `nginx_client_max_body_size=30M`. Variables of docker-gen container are added to global config, and variables on others containers are added to the respective vhosts. Currently only lower case variables are supported (until [jwilder/docker-gen#306](https://github.com/jwilder/docker-gen/pull/306) is merged).
+Environment variables starting with `NGINX_*` are added as nginx config entries, for example: `NGINX_CLIENT_MAX_BODY_SIZE=30M`. Variables of docker-gen container are added to global config, and variables on others containers are added to the respective vhosts.
 
 This fork automatically pulls and rebuilds Docker Hub image on any changes in the upstream repo
 
@@ -35,7 +35,7 @@ services:
     restart: always
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     environment:
-      nginx_client_max_body_size: 42M
+      NGINX_CLIENT_MAX_BODY_SIZE: 42M
     volumes_from:
       - nginx
     volumes:
@@ -56,7 +56,8 @@ services:
     environment:
       VIRTUAL_HOST: example.com
       LETSENCRYPT_HOST: example.com
-      nginx_client_max_body_size: 1337M
+      NGINX_CLIENT_MAX_BODY_SIZE: 1337M
+      NGINX_CLIENT_BODY_BUFFER_SIZE: 128k
 
 volumes:
   conf:
