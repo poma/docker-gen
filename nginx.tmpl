@@ -92,7 +92,7 @@ log_format vhost '$host $remote_addr - $remote_user [$time_local] '
 access_log off;
 
 {{ range $key, $val := .Env }}
-{{ if hasPrefix "nginx_" (toLower $key) }}
+{{ if and $val (hasPrefix "nginx_" (toLower $key)) }}
 {{ trimPrefix "nginx_" (toLower $key) }} {{ $val }};
 {{ end }}
 {{ end }}
@@ -332,7 +332,7 @@ server {
 	{{ end }}
 
 	{{ range $key, $val := (first $containers).Env }}
-	{{ if hasPrefix "nginx_" (toLower $key) }}
+	{{ if and $val (hasPrefix "nginx_" (toLower $key)) }}
 	{{ trimPrefix "nginx_" (toLower $key) }} {{ $val }};
 	{{ end }}
 	{{ end }}
@@ -390,7 +390,7 @@ server {
 	{{ end }}
 
 	{{ range $key, $val := (first $containers).Env }}
-	{{ if hasPrefix "nginx_" (toLower $key) }}
+	{{ if and $val (hasPrefix "nginx_" (toLower $key)) }}
 	{{ trimPrefix "nginx_" (toLower $key) }} {{ $val }};
 	{{ end }}
 	{{ end }}
